@@ -1,5 +1,5 @@
 
-var wordBank = ["beelzebub"];//"heathen","magic","float", "salem", 
+var wordBank = ["calm","rhyme","shaking","damage", "exist", "official", "mathematics", "discussion", "advice", "sale", "zoologist"]; 
 var possible = "abcdefghijklmnopqrstuvwxyz";
 var wins = 0;
 var losses = 0;
