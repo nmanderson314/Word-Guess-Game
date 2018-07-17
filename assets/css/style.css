@@ -1,0 +1,21 @@
+.scoreboard{
+    float: left;
+}
+
+.spaces{
+    float: right;
+    overflow: hidden;
+}
+
+.character-blanks{
+    float: left;
+    overflow:hidden;
+    width: 50px;
+    height: 50px;
+}
+.indv{
+    padding: 10px;
+    float: left;
+    margin: auto;
+    font-size: 24px;
+}

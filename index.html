@@ -12,146 +12,22 @@
 <body>
     <!-- use css to have this show horizontally -->
     <h2>Guess the word I'm thinking of!</h2>
+    <div class="container-fluid">
+            <div class="scoreboard card col-sm-6">
+            <div>Wins:  <span id= "wins"></span></div>
+            <div>Losses:    <span id= "losses"></span></div>
+            <div>Guesses Left:  <span id= "guessesLeft"></span></div>
+            <div>Letter trash:  <span id= "badGuesses"></span></div>
+        </div>
+        <div class="spaces card col-sm-6">
+            <div id="character-blanks"></div> 
+        </div>    
+    </div>
 
-    <div>Wins:<span id= "wins"></span></div>
-    <div>Losses:<span id= "losses"></span></div>
-    <div>Guesses Left:<span id= "guessesLeft"></span></div>
-    <div>Letter trash:<span id= "badGuesses"></span></div>
+    <!-- javascript -->
+    <script src="assets/javascript/game.js"></script>
+
     
-    <div id="character-blanks" class="col-md-6"></div> 
-   
-
-    
-    
-<script>
-    var wordBank = ["beelzebub"];//"heathen","magic","float", "salem", 
-    var possible = "abcdefghijklmnopqrstuvwxyz";
-    var wins = 0;
-    var losses = 0;
-    var guesses = "";
-    var guessesLeft = 0;
-    var secretWord = "";
-    var userGuess;
-    var correctGuesses = []; //array for gathering the correct guesses
-    var wordBuild = [];     //array for collecting parts of the word as correct guesses
-    var badGuesses = [];
-    var allGuesses = [];
-
-    //conjunction junction, what's your FUNCTION?
-    function updatePage(){
-        document.querySelector("#wins").innerHTML = wins; 
-        document.querySelector("#losses").innerHTML = losses; 
-        document.querySelector("#guessesLeft").innerHTML = guessesLeft;
-        document.querySelector("#badGuesses").innerHTML = badGuesses;
-
-    };
-  
-
-    function clearDivs(){
-        for (var i = 0; i < secretWord.length; i++){
-            document.getElementById("charIndex"+i).remove();
-        }
-    };
-
-    function newWord(){
-        clearDivs();
-        //get random word from array
-        secretWord = wordBank[Math.floor(Math.random() * wordBank.length)];
-         
-        // blank spaces for showing number of words
-        var blanks = document.getElementById("character-blanks");
-        blanks.textcontent = "_";
-        for(var i = 0; i < secretWord.length; i++){
-            var moreBlanks = document.createElement("div");
-            moreBlanks.textContent = "_";
-
-            //this gives each div an index to be able to be changed later
-            moreBlanks.setAttribute("id", "charIndex" + i);
-            blanks.appendChild(moreBlanks);
-        };
-
-        //max number of guesses
-        guessesLeft = secretWord.length + 2;
-
-        //reset
-        correctGuesses = [];
-        badGuesses = [];
-        allGuesses=[];
-        wordBuild=[];
-        //update page with initialized values
-        updatePage();
-
-        return secretWord;
-    };
-    
-    //initialize word selection
-    if(wordBank.indexOf(secretWord) == -1){
-        newWord();
-    };
-
-document.onkeyup = function(event) {
-    // Determines which key was pressed.
-      userGuess = event.key;
-//determine a win
-    if(wordBuild.length == secretWord.length){
-        wins++;
-        newWord();
-    }
-    else if(guessesLeft < 2 && wordBuild.length !== secretWord.length){
-        losses++;
-        newWord();
-    }
-    else {
-        //ONLY RUN if valid input and if not already guessed    
-        if(possible.indexOf(userGuess) >-1 && allGuesses.indexOf(userGuess) == -1){
-            //for all characters within the word
-            for(var count = 0; count < secretWord.length; count++){
-                //evaluate if the character is in the word or in the correct guess array
-                if(secretWord.charAt(count) == userGuess)
-                {
-                    //if the character is in the word, add the guess to correctGuesses array AS MANY TIMES AS THE LETTER APPEARS IN THE WORD
-                    wordBuild.push(userGuess);
-                };
-                if(secretWord.charAt(count) == userGuess && correctGuesses.indexOf(userGuess) == -1)
-                {
-                    //if the character is in the word, add the guess to correctGuesses array
-                    correctGuesses.push(userGuess);
-//!!!            //change the blank space to be the letter
-                    var foundIndex = "charIndex" + count;
-                    console.log(foundIndex);
-                    var updateIndexDiv = document.getElementById("#"+foundIndex+"");
-                    console.log(updateIndexDiv)
-                    document.querySelector("#"+foundIndex+"").innerHTML = userGuess; 
-
-                    // updateIndexDiv.textcontent = userGuess;
-                    //document.getElementById("#" + foundIndex + "").innerHTML = userGuess;
-                    //update counter(s)
-                    guessesLeft--;
-                    updatePage();
-                };
-                
-            };
-            if (correctGuesses.indexOf(userGuess) == -1){
-                    badGuesses.push(userGuess);
-                    //update counter(s)
-                    guessesLeft--;
-                    updatePage();
-                };
-            //show the user the incorrect guesses that are made
-            var baddies = document.getElementById("character-blanks");
-            baddies.textcontent = " "+badGuesses+"";        
-
-
-            //collect both correct and bad arrays in one array
-            allGuesses=[];
-            allGuesses.push.apply(allGuesses, badGuesses);
-            allGuesses.push.apply(allGuesses, correctGuesses);
-            };//END - Only run IF valid input & not duplicate & have guesses left  
-    };
-};
-
-
-</script>
 
 
 
