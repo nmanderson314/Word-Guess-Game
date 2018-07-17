@@ -89,22 +89,21 @@
         newWord();
     };
 
-
-//determine a win
-if(wordBuild.length == secretWord.length){
-    wins++;
-    newWord();
-}
-else if(guessesLeft <= 0 && wordBuild.length !== secretWord.length){
-    losses++;
-    newWord();
-}
-else if(wordBuild.length !== secretWord.length && guessesLeft > 0){
-    document.onkeyup = function(event) {
+document.onkeyup = function(event) {
     // Determines which key was pressed.
-        userGuess = event.key;
+      userGuess = event.key;
+//determine a win
+    if(wordBuild.length == secretWord.length){
+        wins++;
+        newWord();
+    }
+    else if(guessesLeft < 2 && wordBuild.length !== secretWord.length){
+        losses++;
+        newWord();
+    }
+    else {
         //ONLY RUN if valid input and if not already guessed    
-        if(possible.indexOf(userGuess) >-1 && allGuesses.indexOf(userGuess) == -1 && guessesLeft > 0 && wordBuild.length !== secretWord.length){
+        if(possible.indexOf(userGuess) >-1 && allGuesses.indexOf(userGuess) == -1){
             //for all characters within the word
             for(var count = 0; count < secretWord.length; count++){
                 //evaluate if the character is in the word or in the correct guess array
@@ -117,11 +116,15 @@ else if(wordBuild.length !== secretWord.length && guessesLeft > 0){
                 {
                     //if the character is in the word, add the guess to correctGuesses array
                     correctGuesses.push(userGuess);
-        //!!!            //change the blank space to be the letter
+//!!!            //change the blank space to be the letter
                     var foundIndex = "charIndex" + count;
-                    var updateIndexDiv = document.getElementById(foundIndex);
-                    updateIndexDiv.textcontent = " "+userGuess+" ";
-                    
+                    console.log(foundIndex);
+                    var updateIndexDiv = document.getElementById("#"+foundIndex+"");
+                    console.log(updateIndexDiv)
+                    document.querySelector("#"+foundIndex+"").innerHTML = userGuess; 
+
+                    // updateIndexDiv.textcontent = userGuess;
+                    //document.getElementById("#" + foundIndex + "").innerHTML = userGuess;
                     //update counter(s)
                     guessesLeft--;
                     updatePage();
@@ -143,7 +146,7 @@ else if(wordBuild.length !== secretWord.length && guessesLeft > 0){
             allGuesses=[];
             allGuesses.push.apply(allGuesses, badGuesses);
             allGuesses.push.apply(allGuesses, correctGuesses);
-            };//END - Only rung IF valid input & not duplicate & have guesses left  
+            };//END - Only run IF valid input & not duplicate & have guesses left  
     };
 };
 
